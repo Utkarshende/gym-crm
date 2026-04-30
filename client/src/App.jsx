@@ -2,20 +2,16 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  Navigate,
 } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import AddMember from "./pages/AddMember";
 
 function App() {
-  const token =
-    localStorage.getItem(
-      "token"
-    );
-
   return (
     <BrowserRouter>
+
       <Routes>
 
         <Route
@@ -25,16 +21,16 @@ function App() {
 
         <Route
           path="/dashboard"
-          element={
-            token ? (
-              <Dashboard />
-            ) : (
-              <Navigate to="/" />
-            )
-          }
+          element={<Dashboard />}
+        />
+
+        <Route
+          path="/add-member"
+          element={<AddMember />}
         />
 
       </Routes>
+
     </BrowserRouter>
   );
 }
