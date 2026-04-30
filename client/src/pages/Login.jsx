@@ -34,12 +34,10 @@ function Login() {
       );
 
       navigate("/dashboard");
-    } catch (error) {
-      alert(
-        error.response?.data
-          ?.message || "Error"
-      );
-    }
+    } catch  (error) {
+  console.log(error.response.data);
+  alert(error.response.data.message);
+}
   };
 
   return (
