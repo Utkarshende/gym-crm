@@ -1,48 +1,173 @@
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../services/api";
-import MemberForm from "../components/members/MemberForm";
 
 function AddMember() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (data) => {
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    gender: "",
+    age: "",
+    address: "",
+    fee: "",
+    plan: "monthly",
+    status: "active",
+    weight: "",
+    height: "",
+    goal: "",
+  });
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (form.name.length < 3) {
+      return alert("Name must be minimum 3 letters");
+    }
+
+    if (!/^\d{10}$/.test(form.phone)) {
+      return alert("Phone must be 10 digits");
+    }
+
+    if (Number(form.fee) < 0) {
+      return alert("Fee cannot be negative");
+    }
+
     try {
-      setLoading(true);
-
-      await API.post("/members", data);
-
+      await API.post("/members", form);
       alert("Member Added Successfully ✅");
-
       navigate("/");
     } catch (error) {
-      console.error(error);
+      console.log(error);
       alert("Failed to add member");
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
-    <div className="bg-slate-100 min-h-screen p-6">
-      <div className="max-w-6xl mx-auto space-y-6">
-        <button
-          onClick={() => navigate(-1)}
-          className="text-blue-600 font-medium"
-        >
-          ← Back
-        </button>
+    <div className="p-6 max-w-5xl mx-auto">
+      <button
+        onClick={() => navigate(-1)}
+        className="mb-5 text-blue-600 font-semibold"
+      >
+        ← Back
+      </button>
 
-        <h1 className="text-3xl font-bold">
-          Add New Member
-        </h1>
+      <h1 className="text-3xl font-bold mb-6">Add New Member</h1>
 
-        <MemberForm
-          onSubmit={handleSubmit}
-          loading={loading}
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white shadow rounded-xl p-6 grid md:grid-cols-2 gap-5"
+      >
+        <input
+          name="name"
+          placeholder="Full Name"
+          className="border p-3 rounded"
+          onChange={handleChange}
         />
-      </div>
+
+        <input
+          name="phone"
+          placeholder="Phone Number"
+          className="border p-3 rounded"
+          onChange={handleChange}
+        />
+
+        <input
+          name="email"
+          placeholder="Email Address"
+          className="border p-3 rounded"
+          onChange={handleChange}
+        />
+
+        <select
+          name="gender"
+          className="border p-3 rounded"
+          onChange={handleChange}
+        >
+          <option value="">Select Gender</option>
+          <option>Male</option>
+          <option>Female</option>
+        </select>
+
+        <input
+          name="age"
+          type="number"
+          placeholder="Age"
+          className="border p-3 rounded"
+          onChange={handleChange}
+        />
+
+        <input
+          name="address"
+          placeholder="Address"
+          className="border p-3 rounded"
+          onChange={handleChange}
+        />
+
+        <input
+          name="fee"
+          type="number"
+          placeholder="Monthly Fees"
+          className="border p-3 rounded"
+          onChange={handleChange}
+        />
+
+        <select
+          name="plan"
+          className="border p-3 rounded"
+          onChange={handleChange}
+        >
+          <option value="monthly">Monthly</option>
+          <option value="quarterly">Quarterly</option>
+        </select>
+
+        <input
+          name="weight"
+          placeholder="Current Weight"
+          className="border p-3 rounded"
+          onChange={handleChange}
+        />
+
+        <input
+          name="height"
+          placeholder="Height"
+          className="border p-3 rounded"
+          onChange={handleChange}
+        />
+
+        <input
+          name="goal"
+          placeholder="Fitness Goal"
+          className="border p-3 rounded"
+          onChange={handleChange}
+        />
+
+        <select
+          name="status"
+          className="border p-3 rounded"
+          onChange={handleChange}
+        >
+          <option value="active">Active</option>
+          <option value="paused">On Break</option>
+          <option value="expired">Inactive</option>
+        </select>
+
+        <button
+          type="submit"
+          className="md:col-span-2 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
+        >
+          Add Member
+        </button>
+      </form>
     </div>
   );
 }
