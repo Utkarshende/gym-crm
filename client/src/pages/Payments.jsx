@@ -1,79 +1,149 @@
-import { useEffect,useState } from "react";
+// src/pages/Payments.jsx
+
+import { useEffect, useState } from "react";
 import API from "../services/api";
+import PaymentTable from "../components/payments/PaymentTable";
+import PaymentHistory from "../components/payments/PaymentHistory";
 
-function Payments(){
+function Payments() {
+  const [members, setMembers] = useState([]);
+  const [pendingMembers, setPendingMembers] = useState([]);
+  const [revenue, setRevenue] = useState(0);
+  const [selectedMember, setSelectedMember] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-const [pending,setPending] = useState([]);
-const [revenue,setRevenue] = useState(0);
+  const currentMonth = new Date().toLocaleString("default", {
+    month: "long",
+    year: "numeric",
+  });
 
-const fetchData = async()=>{
+  const fetchPaymentsData = async () => {
+    try {
+      setLoading(true);
 
-const p = await API.get("/payments/pending/list");
-const r = await API.get("/payments/revenue/month");
+      const membersRes = await API.get("/members");
+      const pendingRes = await API.get("/payments/pending/list");
+      const revenueRes = await API.get("/payments/revenue/month");
 
-setPending(p.data);
-setRevenue(r.data.revenue);
-};
+      setMembers(membersRes.data || []);
+      setPendingMembers(pendingRes.data || []);
+      setRevenue(revenueRes.data.revenue || 0);
+    } catch (error) {
+      console.error("Payment fetch error:", error);
+      alert("Failed to load payment data");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-useEffect(()=>{
-fetchData();
-},[]);
+  useEffect(() => {
+    fetchPaymentsData();
+  }, []);
 
-const markPaid = async(id,fee)=>{
-await API.post(`/payments/${id}/pay`,{
-amount:fee
-});
+  const markPaid = async (member) => {
+    try {
+      await API.post(`/payments/${member._id}/pay`, {
+        amount: member.fee,
+      });
 
-fetchData();
-};
+      alert("Payment marked successfully ✅");
 
-return(
-<div className="p-6">
+      fetchPaymentsData();
+    } catch (error) {
+      console.error(error);
+      alert("Failed to mark payment");
+    }
+  };
 
-<h1 className="text-3xl font-bold mb-6">
-Payments Dashboard
-</h1>
+  if (loading) {
+    return <div className="p-6">Loading Payments...</div>;
+  }
 
-<div className="bg-green-600 text-white p-4 rounded mb-6">
-Revenue This Month: ₹{revenue}
-</div>
+  return (
+    <div className="p-6 space-y-6">
+      {/* Top */}
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold">Payments Dashboard</h1>
+      </div>
 
-<h2 className="text-xl font-semibold mb-4">
-Pending Members
-</h2>
+      {/* Cards */}
+      <div className="grid md:grid-cols-3 gap-4">
+        <div className="bg-green-600 text-white p-5 rounded-xl shadow">
+          <p className="text-sm opacity-80">Revenue This Month</p>
+          <h2 className="text-2xl font-bold">₹{revenue}</h2>
+        </div>
 
-<table className="w-full bg-white rounded shadow">
-<thead>
-<tr className="bg-gray-100">
-<th>Name</th>
-<th>Fee</th>
-<th>Action</th>
-</tr>
-</thead>
+        <div className="bg-yellow-500 text-white p-5 rounded-xl shadow">
+          <p className="text-sm opacity-80">Pending Members</p>
+          <h2 className="text-2xl font-bold">
+            {pendingMembers.length}
+          </h2>
+        </div>
 
-<tbody>
-{pending.map((m)=>(
-<tr key={m._id} className="border-b">
+        <div className="bg-blue-600 text-white p-5 rounded-xl shadow">
+          <p className="text-sm opacity-80">Current Month</p>
+          <h2 className="text-xl font-bold">{currentMonth}</h2>
+        </div>
+      </div>
 
-<td className="p-3">{m.name}</td>
-<td>₹{m.fee}</td>
+      {/* Pending Members */}
+      <div className="bg-white rounded-xl shadow p-5">
+        <h2 className="text-xl font-semibold mb-4">
+          Pending Payments
+        </h2>
 
-<td>
-<button
-onClick={()=>markPaid(m._id,m.fee)}
-className="bg-blue-600 text-white px-3 py-1 rounded"
->
-Mark Paid
-</button>
-</td>
+        {pendingMembers.length === 0 ? (
+          <p>All members paid this month ✅</p>
+        ) : (
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-gray-100 text-left">
+                <th className="p-3">Name</th>
+                <th className="p-3">Phone</th>
+                <th className="p-3">Fee</th>
+                <th className="p-3">Action</th>
+              </tr>
+            </thead>
 
-</tr>
-))}
-</tbody>
-</table>
+            <tbody>
+              {pendingMembers.map((member) => (
+                <tr key={member._id} className="border-b">
+                  <td className="p-3">{member.name}</td>
+                  <td className="p-3">{member.phone}</td>
+                  <td className="p-3">₹{member.fee}</td>
 
-</div>
-);
+                  <td className="p-3">
+                    <button
+                      onClick={() => markPaid(member)}
+                      className="bg-green-600 text-white px-3 py-1 rounded"
+                    >
+                      Mark Paid
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      {/* All Payment Table */}
+      <PaymentTable
+        members={members}
+        onViewHistory={(member) =>
+          setSelectedMember(member)
+        }
+      />
+
+      {/* Payment History */}
+      {selectedMember && (
+        <PaymentHistory
+          member={selectedMember}
+          onClose={() => setSelectedMember(null)}
+        />
+      )}
+    </div>
+  );
 }
 
 export default Payments;

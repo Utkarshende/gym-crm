@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import API from "../services/api";
+import PaymentHistory from "../components/payments/PaymentHistory";
 
 function ViewMode() {
   const { id } = useParams();
@@ -265,6 +266,7 @@ function ViewMode() {
           >
             Dashboard
           </button>
+          <PaymentHistory payments={member.payments} />
         </div>
       </div>
     </div>
