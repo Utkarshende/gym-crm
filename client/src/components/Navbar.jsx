@@ -1,0 +1,43 @@
+import { useNavigate } from "react-router-dom";
+
+function Navbar() {
+  const navigate = useNavigate();
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
+  return (
+    <div className="bg-white shadow px-6 py-4 flex justify-between items-center">
+      
+      {/* Left */}
+      <h1
+        className="text-xl font-bold cursor-pointer"
+        onClick={() => navigate("/dashboard")}
+      >
+        Gym CRM
+      </h1>
+
+      {/* Right */}
+      <div className="flex items-center gap-4">
+        <button
+          onClick={() => navigate("/add-member")}
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+        >
+          + Add Member
+        </button>
+
+        <button
+          onClick={logout}
+          className="bg-red-500 text-white px-4 py-2 rounded"
+        >
+          Logout
+        </button>
+      </div>
+
+    </div>
+  );
+}
+
+export default Navbar;
