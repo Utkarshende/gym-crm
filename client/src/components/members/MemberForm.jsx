@@ -1,383 +1,237 @@
-// src/components/members/MemberForm.jsx
+import { useMemo } from "react";
 
-import { useState, useEffect } from "react";
-import Input from "../ui/Input";
-import Button from "../ui/Button";
+function MemberForm({ form, setForm, onSubmit, buttonText }) {
+  const bmi = useMemo(() => {
+    const h = Number(form.height) / 100;
+    const w = Number(form.weight);
 
-function MemberForm({
-  initialData = {},
-  onSubmit,
-  loading = false,
-  submitText = "Save Member",
-}) {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    gender: "",
-    dob: "",
-    address: "",
-    height: "",
-    weight: "",
-    goalWeight: "",
-    fee: "",
-    plan: "monthly",
-    category: "gym",
-    status: "active",
-    startDate: "",
-    endDate: "",
-    emergencyName: "",
-    emergencyPhone: "",
-    paymentAmount: "",
-    paymentDate: "",
-    ...initialData,
-  });
+    if (!h || !w) return "";
 
-  useEffect(() => {
-    setForm((prev) => ({
-      ...prev,
-      ...initialData,
-    }));
-  }, [initialData]);
+    return (w / (h * h)).toFixed(1);
+  }, [form.height, form.weight]);
 
-  const updateField = (key, value) => {
-    setForm((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+  const update = (key, value) => {
+    setForm({ ...form, [key]: value });
   };
 
-  const onlyLetters = (value) =>
-    value.replace(/[^a-zA-Z ]/g, "");
-
-  const onlyNumbers = (value, max = 10) =>
-    value.replace(/\D/g, "").slice(0, max);
-
-  const validate = () => {
-    if (!/^[A-Za-z ]{3,}$/.test(form.name)) {
-      alert("Name must contain only letters and minimum 3 characters");
-      return false;
-    }
-
-    if (!/^\d{10}$/.test(form.phone)) {
-      alert("Phone must be exactly 10 digits");
-      return false;
-    }
-
-    if (
-      form.email &&
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)
-    ) {
-      alert("Invalid email address");
-      return false;
-    }
-
-    if (Number(form.fee) < 0) {
-      alert("Fee cannot be negative");
-      return false;
-    }
-
-    if (
-      form.emergencyName &&
-      !/^[A-Za-z ]+$/.test(form.emergencyName)
-    ) {
-      alert("Emergency contact name only letters allowed");
-      return false;
-    }
-
-    if (
-      form.emergencyPhone &&
-      !/^\d{10}$/.test(form.emergencyPhone)
-    ) {
-      alert("Emergency phone must be 10 digits");
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!validate()) return;
-
-    onSubmit(form);
+  const updateNested = (parent, key, value) => {
+    setForm({
+      ...form,
+      [parent]: {
+        ...form[parent],
+        [key]: value,
+      },
+    });
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-6"
-    >
-      {/* PERSONAL */}
-      <div className="bg-white dark:bg-gray-900 shadow rounded-2xl p-5">
-        <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">
-          Personal Information
-        </h2>
+    <div className="space-y-6">
 
-        <div className="grid md:grid-cols-2 gap-4">
-          <Input
-            label="Full Name"
+      {/* PERSONAL */}
+      <div className="bg-white p-5 rounded-xl shadow space-y-4">
+        <h2 className="font-bold text-lg">Personal Info</h2>
+
+        <div>
+          <label>Name</label>
+          <input
+            className="input"
             value={form.name}
             onChange={(e) =>
-              updateField(
-                "name",
-                onlyLetters(e.target.value)
-              )
-            }
-          />
-
-          <Input
-            label="Email"
-            value={form.email}
-            onChange={(e) =>
-              updateField("email", e.target.value)
-            }
-          />
-
-          <Input
-            label="Phone Number"
-            value={form.phone}
-            onChange={(e) =>
-              updateField(
-                "phone",
-                onlyNumbers(e.target.value)
-              )
-            }
-          />
-
-          <Input
-            type="date"
-            label="Date of Birth"
-            value={form.dob}
-            onChange={(e) =>
-              updateField("dob", e.target.value)
-            }
-          />
-
-          <select
-            className="border rounded-xl px-3 py-2 dark:bg-gray-800 dark:text-white"
-            value={form.gender}
-            onChange={(e) =>
-              updateField("gender", e.target.value)
-            }
-          >
-            <option value="">Select Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-          </select>
-
-          <Input
-            label="Address"
-            value={form.address}
-            onChange={(e) =>
-              updateField("address", e.target.value)
+              update("name", e.target.value.replace(/[^a-zA-Z ]/g, ""))
             }
           />
         </div>
+
+        <div>
+          <label>Email</label>
+          <input
+            className="input"
+            value={form.email}
+            onChange={(e) => update("email", e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label>Phone</label>
+          <input
+            className="input"
+            value={form.phone}
+            maxLength={10}
+            onChange={(e) =>
+              update(
+                "phone",
+                e.target.value.replace(/\D/g, "").slice(0, 10)
+              )
+            }
+          />
+        </div>
+
+        <div>
+          <label>Gender</label>
+          <select
+            className="input"
+            value={form.gender}
+            onChange={(e) => update("gender", e.target.value)}
+          >
+            <option value="">Select</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
+        </div>
       </div>
 
-      {/* BODY */}
-      <div className="bg-white dark:bg-gray-900 shadow rounded-2xl p-5">
-        <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">
-          Fitness Information
-        </h2>
+      {/* FITNESS */}
+      <div className="bg-white p-5 rounded-xl shadow space-y-4">
+        <h2 className="font-bold text-lg">Fitness</h2>
 
-        <div className="grid md:grid-cols-3 gap-4">
-          <Input
+        <div>
+          <label>Height (cm)</label>
+          <input
+            className="input"
             type="number"
-            label="Height"
             value={form.height}
-            onChange={(e) =>
-              updateField(
-                "height",
-                Math.max(0, e.target.value)
-              )
-            }
+            onChange={(e) => update("height", e.target.value)}
           />
+        </div>
 
-          <Input
+        <div>
+          <label>Weight (kg)</label>
+          <input
+            className="input"
             type="number"
-            label="Weight"
             value={form.weight}
+            onChange={(e) => update("weight", e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label>Goal Weight</label>
+          <input
+            className="input"
+            type="number"
+            value={form.goalWeight}
+            onChange={(e) => update("goalWeight", e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label>BMI</label>
+          <input className="input bg-gray-100" value={bmi} readOnly />
+        </div>
+      </div>
+
+      {/* EMERGENCY */}
+      <div className="bg-white p-5 rounded-xl shadow space-y-4">
+        <h2 className="font-bold text-lg">Emergency Contact</h2>
+
+        <div>
+          <label>Name</label>
+          <input
+            className="input"
+            value={form.emergency?.name || ""}
             onChange={(e) =>
-              updateField(
-                "weight",
-                Math.max(0, e.target.value)
+              updateNested("emergency", "name", e.target.value)
+            }
+          />
+        </div>
+
+        <div>
+          <label>Phone</label>
+          <input
+            className="input"
+            maxLength={10}
+            value={form.emergency?.phone || ""}
+            onChange={(e) =>
+              updateNested(
+                "emergency",
+                "phone",
+                e.target.value.replace(/\D/g, "").slice(0, 10)
               )
             }
           />
+        </div>
 
-          <Input
-            type="number"
-            label="Goal Weight"
-            value={form.goalWeight}
+        <div>
+          <label>Relation</label>
+          <input
+            className="input"
+            value={form.emergency?.relation || ""}
             onChange={(e) =>
-              updateField(
-                "goalWeight",
-                Math.max(0, e.target.value)
-              )
+              updateNested("emergency", "relation", e.target.value)
             }
           />
         </div>
       </div>
 
       {/* MEMBERSHIP */}
-      <div className="bg-white dark:bg-gray-900 shadow rounded-2xl p-5">
-        <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">
-          Membership
-        </h2>
+      <div className="bg-white p-5 rounded-xl shadow space-y-4">
+        <h2 className="font-bold text-lg">Membership</h2>
 
-        <div className="grid md:grid-cols-2 gap-4">
-          <select
-            className="border rounded-xl px-3 py-2 dark:bg-gray-800 dark:text-white"
-            value={form.plan}
-            onChange={(e) =>
-              updateField("plan", e.target.value)
-            }
-          >
-            <option value="monthly">Monthly</option>
-            <option value="quarterly">
-              Quarterly
-            </option>
-          </select>
+        <label>Fee</label>
+        <input
+          className="input"
+          type="number"
+          min="0"
+          value={form.fee}
+          onChange={(e) => update("fee", e.target.value)}
+        />
 
-          <select
-            className="border rounded-xl px-3 py-2 dark:bg-gray-800 dark:text-white"
-            value={form.category}
-            onChange={(e) =>
-              updateField("category", e.target.value)
-            }
-          >
-            <option value="gym">Gym</option>
-            <option value="gym+cardio">
-              Gym + Cardio
-            </option>
-          </select>
+        <label>Status</label>
+        <select
+          className="input"
+          value={form.status}
+          onChange={(e) => update("status", e.target.value)}
+        >
+          <option value="active">Active</option>
+          <option value="expired">Not Active</option>
+          <option value="paused">Break</option>
+        </select>
+      </div>
 
-          <Input
-            type="number"
-            label="Fees"
-            value={form.fee}
+      {/* BREAK */}
+      {form.status === "paused" && (
+        <div className="bg-white p-5 rounded-xl shadow space-y-4">
+          <h2 className="font-bold text-lg">Break Details</h2>
+
+          <label>Reason</label>
+          <input
+            className="input"
+            value={form.pause?.reason || ""}
             onChange={(e) =>
-              updateField(
-                "fee",
-                Math.max(0, e.target.value)
-              )
+              updateNested("pause", "reason", e.target.value)
             }
           />
 
-          <select
-            className="border rounded-xl px-3 py-2 dark:bg-gray-800 dark:text-white"
-            value={form.status}
-            onChange={(e) =>
-              updateField("status", e.target.value)
-            }
-          >
-            <option value="active">Active</option>
-            <option value="expired">
-              Not Active
-            </option>
-            <option value="paused">
-              On Break
-            </option>
-          </select>
-
-          <Input
+          <label>From</label>
+          <input
+            className="input"
             type="date"
-            label="Joined Date"
-            value={form.startDate?.slice(0, 10)}
+            value={form.pause?.from || ""}
             onChange={(e) =>
-              updateField(
-                "startDate",
-                e.target.value
-              )
+              updateNested("pause", "from", e.target.value)
             }
           />
 
-          <Input
+          <label>To</label>
+          <input
+            className="input"
             type="date"
-            label="Expiry Date"
-            value={form.endDate?.slice(0, 10)}
+            value={form.pause?.to || ""}
             onChange={(e) =>
-              updateField(
-                "endDate",
-                e.target.value
-              )
+              updateNested("pause", "to", e.target.value)
             }
           />
         </div>
-      </div>
+      )}
 
-      {/* PAYMENT */}
-      <div className="bg-white dark:bg-gray-900 shadow rounded-2xl p-5">
-        <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">
-          Payment History
-        </h2>
-
-        <div className="grid md:grid-cols-2 gap-4">
-          <Input
-            type="number"
-            label="Payment Amount"
-            value={form.paymentAmount}
-            onChange={(e) =>
-              updateField(
-                "paymentAmount",
-                Math.max(0, e.target.value)
-              )
-            }
-          />
-
-          <Input
-            type="date"
-            label="Payment Date"
-            value={form.paymentDate}
-            onChange={(e) =>
-              updateField(
-                "paymentDate",
-                e.target.value
-              )
-            }
-          />
-        </div>
-      </div>
-
-      {/* EMERGENCY */}
-      <div className="bg-white dark:bg-gray-900 shadow rounded-2xl p-5">
-        <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">
-          Emergency Contact
-        </h2>
-
-        <div className="grid md:grid-cols-2 gap-4">
-          <Input
-            label="Emergency Name"
-            value={form.emergencyName}
-            onChange={(e) =>
-              updateField(
-                "emergencyName",
-                onlyLetters(e.target.value)
-              )
-            }
-          />
-
-          <Input
-            label="Emergency Phone"
-            value={form.emergencyPhone}
-            onChange={(e) =>
-              updateField(
-                "emergencyPhone",
-                onlyNumbers(e.target.value)
-              )
-            }
-          />
-        </div>
-      </div>
-
-      <Button type="submit" disabled={loading}>
-        {loading ? "Saving..." : submitText}
-      </Button>
-    </form>
+      <button
+        onClick={onSubmit}
+        className="bg-blue-600 text-white px-6 py-3 rounded-lg"
+      >
+        {buttonText}
+      </button>
+    </div>
   );
 }
 

@@ -20,6 +20,16 @@ const memberSchema = new mongoose.Schema(
     weight: String,
     height: String,
     goal: String,
+    payments: [
+      {
+        amount: Number,
+        month: String,
+        paidOn: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

@@ -1,6 +1,9 @@
 import Member from "../models/Member.js";
+import express from "express";
 
-export const markPaid = async (req,res) => {
+const router = express.Router();
+
+const markPaid = async (req,res) => {
 try{
 
 const { amount } = req.body;
@@ -57,7 +60,7 @@ try{
 const month = new Date().toLocaleString("default", {
 month:"long",
 year:"numeric"
-});
+});s
 
 const members = await Member.find();
 
@@ -77,3 +80,5 @@ res.json({ revenue: total });
 res.status(500).json({message:error.message});
 }
 };
+
+export default router;
