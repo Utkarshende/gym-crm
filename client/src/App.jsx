@@ -11,7 +11,7 @@ import EditMember from "./pages/EditMember";
 import ViewMode from "./pages/ViewMode";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/layout/ProtectedRoute";
 
 function App() {
   return (
