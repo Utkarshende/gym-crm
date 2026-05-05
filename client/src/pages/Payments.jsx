@@ -1,9 +1,9 @@
-// src/pages/Payments.jsx
-
 import { useEffect, useState } from "react";
 import API from "../services/api";
+
 import PaymentTable from "../components/payments/PaymentTable";
 import PaymentHistory from "../components/payments/PaymentHistory";
+import PaymentCard from "../components/payments/PaymentCard";
 
 function Payments() {
   const [members, setMembers] = useState([]);
@@ -17,17 +17,21 @@ function Payments() {
     year: "numeric",
   });
 
+  // 🔥 Fetch all payment-related data
   const fetchPaymentsData = async () => {
     try {
       setLoading(true);
 
-      const membersRes = await API.get("/members");
-      const pendingRes = await API.get("/payments/pending/list");
-      const revenueRes = await API.get("/payments/revenue/month");
+      const [membersRes, pendingRes, revenueRes] = await Promise.all([
+        API.get("/members"),
+        API.get("/payments/pending/list"),
+        API.get("/payments/revenue/month"),
+      ]);
 
       setMembers(membersRes.data || []);
       setPendingMembers(pendingRes.data || []);
-      setRevenue(revenueRes.data.revenue || 0);
+      setRevenue(revenueRes.data?.revenue || 0);
+
     } catch (error) {
       console.error("Payment fetch error:", error);
       alert("Failed to load payment data");
@@ -47,53 +51,52 @@ function Payments() {
       });
 
       alert("Payment marked successfully ✅");
-
       fetchPaymentsData();
+
     } catch (error) {
       console.error(error);
-      alert("Failed to mark payment");
+      alert("Failed to mark payment ❌");
     }
   };
 
   if (loading) {
-    return <div className="p-6">Loading Payments...</div>;
+    return <div className="p-6 text-gray-500">Loading Payments...</div>;
   }
 
   return (
     <div className="p-6 space-y-6">
-      {/* Top */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Payments Dashboard</h1>
-      </div>
 
-      {/* Cards */}
+      <h1 className="text-3xl font-bold">Payments Dashboard</h1>
+
       <div className="grid md:grid-cols-3 gap-4">
-        <div className="bg-green-600 text-white p-5 rounded-xl shadow">
-          <p className="text-sm opacity-80">Revenue This Month</p>
-          <h2 className="text-2xl font-bold">₹{revenue}</h2>
-        </div>
+        <PaymentCard
+          title="Revenue This Month"
+          value={`₹${revenue}`}
+          color="bg-green-600"
+        />
 
-        <div className="bg-yellow-500 text-white p-5 rounded-xl shadow">
-          <p className="text-sm opacity-80">Pending Members</p>
-          <h2 className="text-2xl font-bold">
-            {pendingMembers.length}
-          </h2>
-        </div>
+        <PaymentCard
+          title="Pending Members"
+          value={pendingMembers.length}
+          color="bg-yellow-500"
+        />
 
-        <div className="bg-blue-600 text-white p-5 rounded-xl shadow">
-          <p className="text-sm opacity-80">Current Month</p>
-          <h2 className="text-xl font-bold">{currentMonth}</h2>
-        </div>
+        <PaymentCard
+          title="Current Month"
+          value={currentMonth}
+          color="bg-blue-600"
+        />
       </div>
 
-      {/* Pending Members */}
       <div className="bg-white rounded-xl shadow p-5">
         <h2 className="text-xl font-semibold mb-4">
           Pending Payments
         </h2>
 
         {pendingMembers.length === 0 ? (
-          <p>All members paid this month ✅</p>
+          <p className="text-green-600 font-medium">
+            All members paid this month ✅
+          </p>
         ) : (
           <table className="w-full text-sm">
             <thead>
@@ -115,7 +118,7 @@ function Payments() {
                   <td className="p-3">
                     <button
                       onClick={() => markPaid(member)}
-                      className="bg-green-600 text-white px-3 py-1 rounded"
+                      className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
                     >
                       Mark Paid
                     </button>
@@ -127,18 +130,14 @@ function Payments() {
         )}
       </div>
 
-      {/* All Payment Table */}
       <PaymentTable
         members={members}
-        onViewHistory={(member) =>
-          setSelectedMember(member)
-        }
+        onViewHistory={(member) => setSelectedMember(member)}
       />
 
-      {/* Payment History */}
       {selectedMember && (
         <PaymentHistory
-          member={selectedMember}
+          payments={selectedMember.payments}
           onClose={() => setSelectedMember(null)}
         />
       )}
