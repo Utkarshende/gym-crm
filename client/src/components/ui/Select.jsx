@@ -1,27 +1,19 @@
-function Select({
-  label,
-  value,
-  onChange,
-  options = [],
-  name,
-}) {
+function Select({ label, name, value, onChange, options }) {
   return (
     <div>
-      {label && (
-        <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-200">
-          {label}
-        </label>
-      )}
+      <label className="block mb-1 text-sm text-gray-600 dark:text-gray-300">
+        {label}
+      </label>
 
       <select
         name={name}
-        value={value}
+        value={value ?? ""}
         onChange={onChange}
-        className="w-full px-4 py-2 border rounded-xl bg-white dark:bg-gray-800 dark:text-white"
+        className="w-full border rounded-lg px-3 py-2 bg-white dark:bg-gray-700 dark:text-white"
       >
         {options.map((item) => (
-          <option key={item.value || item} value={item.value || item}>
-            {item.label || item}
+          <option key={item} value={item}>
+            {item}
           </option>
         ))}
       </select>
