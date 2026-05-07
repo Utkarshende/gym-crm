@@ -20,11 +20,9 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-        {/* AUTH */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* PROTECTED */}
         <Route path="/dashboard" element={
           <PrivateRoute>
             <MainLayout><Dashboard /></MainLayout>

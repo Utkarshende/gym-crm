@@ -2,6 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../services/api";
 
+import Input from "../components/ui/Input";
+import Select from "../components/ui/Select";
+import Button from "../components/ui/Button";
+
 function AddMember() {
   const navigate = useNavigate();
 
@@ -20,46 +24,33 @@ function AddMember() {
     goal: "",
   });
 
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+  const update = (key, value) => {
+    setForm({ ...form, [key]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (form.name.length < 3) {
-      return alert("Name must be minimum 3 letters");
-    }
-
-    if (!/^\d{10}$/.test(form.phone)) {
-      return alert("Phone must be 10 digits");
-    }
-
-    if (Number(form.fee) < 0) {
-      return alert("Fee cannot be negative");
-    }
+    if (form.name.length < 3) return alert("Name must be minimum 3 letters");
+    if (!/^\d{10}$/.test(form.phone)) return alert("Phone must be 10 digits");
+    if (Number(form.fee) < 0) return alert("Fee cannot be negative");
 
     try {
       await API.post("/members", form);
       alert("Member Added Successfully ✅");
-      navigate("/");
+      navigate("/dashboard");
     } catch (error) {
-      console.log(error);
+      console.error(error);
       alert("Failed to add member");
     }
   };
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
-      <button
-        onClick={() => navigate(-1)}
-        className="mb-5 text-blue-600 font-semibold"
-      >
+
+      <Button onClick={() => navigate(-1)} className="mb-5">
         ← Back
-      </button>
+      </Button>
 
       <h1 className="text-3xl font-bold mb-6">Add New Member</h1>
 
@@ -67,106 +58,29 @@ function AddMember() {
         onSubmit={handleSubmit}
         className="bg-white shadow rounded-xl p-6 grid md:grid-cols-2 gap-5"
       >
-        <input
-          name="name"
-          placeholder="Full Name"
-          className="border p-3 rounded"
-          onChange={handleChange}
-        />
+        <Input label="Full Name" value={form.name} onChange={(e) => update("name", e.target.value)} />
+        <Input label="Phone" value={form.phone} onChange={(e) => update("phone", e.target.value.replace(/\D/g, "").slice(0, 10))} />
+        <Input label="Email" value={form.email} onChange={(e) => update("email", e.target.value)} />
 
-        <input
-          name="phone"
-          placeholder="Phone Number"
-          className="border p-3 rounded"
-          onChange={handleChange}
-        />
+        <Select label="Gender" value={form.gender} onChange={(e) => update("gender", e.target.value)} options={["male", "female"]} />
 
-        <input
-          name="email"
-          placeholder="Email Address"
-          className="border p-3 rounded"
-          onChange={handleChange}
-        />
+        <Input label="Age" type="number" value={form.age} onChange={(e) => update("age", e.target.value)} />
+        <Input label="Address" value={form.address} onChange={(e) => update("address", e.target.value)} />
 
-        <select
-          name="gender"
-          className="border p-3 rounded"
-          onChange={handleChange}
-        >
-          <option value="">Select Gender</option>
-          <option>Male</option>
-          <option>Female</option>
-        </select>
+        <Input label="Monthly Fee" type="number" value={form.fee} onChange={(e) => update("fee", e.target.value)} />
 
-        <input
-          name="age"
-          type="number"
-          placeholder="Age"
-          className="border p-3 rounded"
-          onChange={handleChange}
-        />
+        <Select label="Plan" value={form.plan} onChange={(e) => update("plan", e.target.value)} options={["monthly", "quarterly"]} />
 
-        <input
-          name="address"
-          placeholder="Address"
-          className="border p-3 rounded"
-          onChange={handleChange}
-        />
+        <Input label="Weight" value={form.weight} onChange={(e) => update("weight", e.target.value)} />
+        <Input label="Height" value={form.height} onChange={(e) => update("height", e.target.value)} />
 
-        <input
-          name="fee"
-          type="number"
-          placeholder="Monthly Fees"
-          className="border p-3 rounded"
-          onChange={handleChange}
-        />
+        <Input label="Fitness Goal" value={form.goal} onChange={(e) => update("goal", e.target.value)} />
 
-        <select
-          name="plan"
-          className="border p-3 rounded"
-          onChange={handleChange}
-        >
-          <option value="monthly">Monthly</option>
-          <option value="quarterly">Quarterly</option>
-        </select>
+        <Select label="Status" value={form.status} onChange={(e) => update("status", e.target.value)} options={["active", "paused", "expired"]} />
 
-        <input
-          name="weight"
-          placeholder="Current Weight"
-          className="border p-3 rounded"
-          onChange={handleChange}
-        />
-
-        <input
-          name="height"
-          placeholder="Height"
-          className="border p-3 rounded"
-          onChange={handleChange}
-        />
-
-        <input
-          name="goal"
-          placeholder="Fitness Goal"
-          className="border p-3 rounded"
-          onChange={handleChange}
-        />
-
-        <select
-          name="status"
-          className="border p-3 rounded"
-          onChange={handleChange}
-        >
-          <option value="active">Active</option>
-          <option value="paused">On Break</option>
-          <option value="expired">Inactive</option>
-        </select>
-
-        <button
-          type="submit"
-          className="md:col-span-2 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
-        >
+        <Button type="submit" className="md:col-span-2">
           Add Member
-        </button>
+        </Button>
       </form>
     </div>
   );

@@ -2,20 +2,27 @@ import Button from "../ui/Button";
 
 function DashboardHeader({ dark, setDark, onAdd }) {
   return (
-    <div className="flex flex-wrap gap-3 justify-between items-center mb-6">
+   
+    <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center mb-8">
       
-      <h1 className="text-3xl font-bold">Members Dashboard</h1>
+      <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+        Members Dashboard
+      </h1>
 
-      <div className="flex gap-3 flex-wrap">
+      <div className="flex gap-2 w-full sm:w-auto">
         <Button 
           onClick={() => setDark(!dark)} 
-          className="bg-slate-700 hover:bg-slate-600"
+          className="flex-1 sm:flex-none bg-slate-700 hover:bg-slate-600 text-sm py-2 px-4"
         >
           {dark ? "Light Mode" : "Dark Mode"}
         </Button>
 
-        <Button onClick={onAdd}>
-          + Add Member
+        <Button 
+          onClick={onAdd}
+          className="flex-1 sm:flex-none text-sm py-2 px-4 shadow-sm"
+        >
+          + <span className="hidden xs:inline">Add Member</span>
+          <span className="xs:hidden">Add</span>
         </Button>
       </div>
 

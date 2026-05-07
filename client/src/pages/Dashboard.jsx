@@ -10,7 +10,6 @@ import { exportToCSV } from "../utils/exportCSV";
 
 function Dashboard() {
   const navigate = useNavigate();
-
   const [members, setMembers] = useState([]);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
