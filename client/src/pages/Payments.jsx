@@ -17,7 +17,6 @@ function Payments() {
     year: "numeric",
   });
 
-  // 🔥 Fetch all payment-related data
   const fetchPaymentsData = async () => {
     try {
       setLoading(true);

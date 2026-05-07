@@ -8,7 +8,6 @@ function MainLayout({ children }) {
   return (
     <div className="flex min-h-screen bg-slate-100">
 
-      {/* Sidebar */}
       <div
         className={`
           fixed z-40 inset-y-0 left-0 w-64 bg-white shadow
@@ -20,7 +19,6 @@ function MainLayout({ children }) {
         <Sidebar close={() => setOpen(false)} />
       </div>
 
-      {/* Overlay (mobile only) */}
       {open && (
         <div
           className="fixed inset-0 bg-black/40 z-30 md:hidden"
@@ -28,7 +26,6 @@ function MainLayout({ children }) {
         />
       )}
 
-      {/* Content */}
       <div className="flex-1 flex flex-col">
         <Navbar toggleSidebar={() => setOpen(!open)} />
         <div className="p-4 md:p-6">{children}</div>

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import API from "../services/api";
 
-function ViewMode() {
+function ViewMember() {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -12,7 +12,6 @@ function ViewMode() {
   const fetchMember = async () => {
     try {
       setLoading(true);
-      // Adding a timestamp or cache-buster if your API/Browser is caching the response
       const res = await API.get(`/members/${id}?t=${new Date().getTime()}`);
       setMember(res.data);
     } catch (error) {
@@ -49,7 +48,6 @@ function ViewMode() {
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
       <div className="max-w-6xl mx-auto space-y-6">
         
-        {/* Navigation */}
         <div className="flex flex-wrap gap-3 justify-between items-center">
           <button
             onClick={() => navigate(-1)}
@@ -65,7 +63,6 @@ function ViewMode() {
           </button>
         </div>
 
-        {/* Profile Card */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow p-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
@@ -79,7 +76,6 @@ function ViewMode() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Personal Info */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow p-6">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white border-b pb-2">Personal Details</h2>
             <div className="space-y-3 text-gray-700 dark:text-gray-200">
@@ -90,7 +86,6 @@ function ViewMode() {
             </div>
           </div>
 
-          {/* Fitness Info */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow p-6">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white border-b pb-2">Fitness Stats</h2>
             <div className="space-y-3 text-gray-700 dark:text-gray-200">
@@ -100,7 +95,6 @@ function ViewMode() {
             </div>
           </div>
 
-          {/* Membership */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow p-6">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white border-b pb-2">Membership</h2>
             <div className="space-y-3 text-gray-700 dark:text-gray-200">
@@ -111,7 +105,6 @@ function ViewMode() {
           </div>
         </div>
 
-        {/* Payment History */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow p-6">
           <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Payment History</h2>
           {member.payments?.length > 0 ? (
@@ -144,4 +137,4 @@ function ViewMode() {
   );
 }
 
-export default ViewMode;
+export default ViewMember;

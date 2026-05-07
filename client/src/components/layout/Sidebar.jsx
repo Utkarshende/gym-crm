@@ -11,8 +11,7 @@ function Sidebar() {
 
   return (
     <>
-      {/* --- DESKTOP SIDEBAR --- */}
-      {/* Hidden on mobile (hidden), shown on md screens and up (md:flex) */}
+  
       <div className="hidden md:flex flex-col w-64 bg-slate-900 text-white p-5 min-h-screen sticky top-0">
         <h2 className="text-2xl font-bold mb-8 flex items-center gap-2">
           <span>🏋</span> Gym CRM
@@ -33,8 +32,7 @@ function Sidebar() {
         </nav>
       </div>
 
-      {/* --- MOBILE BOTTOM NAV --- */}
-      {/* Shown on mobile, hidden on md screens and up (md:hidden) */}
+    
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900 text-white border-t border-slate-800 z-50">
         <div className="flex justify-around items-center">
           {menu.map((item) => (
@@ -49,7 +47,7 @@ function Sidebar() {
             >
               <span className="text-xl mb-1">{item.icon}</span>
               <span className="text-[10px] uppercase font-bold tracking-wider">
-                {item.name.split(' ')[0]} {/* Shortens "Add Member" to "Add" */}
+                {item.name.split(' ')[0]} 
               </span>
             </Link>
           ))}
