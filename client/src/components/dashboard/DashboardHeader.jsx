@@ -11,13 +11,6 @@ function DashboardHeader({ dark, setDark, onAdd }) {
 
       <div className="flex gap-2 w-full sm:w-auto">
         <Button 
-          onClick={() => setDark(!dark)} 
-          className="flex-1 sm:flex-none bg-slate-700 hover:bg-slate-600 text-sm py-2 px-4"
-        >
-          {dark ? "Light Mode" : "Dark Mode"}
-        </Button>
-
-        <Button 
           onClick={onAdd}
           className="flex-1 sm:flex-none text-sm py-2 px-4 shadow-sm"
         >

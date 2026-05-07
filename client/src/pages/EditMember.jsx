@@ -18,7 +18,7 @@ function EditMember() {
   const [saving, setSaving] = useState(false);
 
   const [member, setMember] = useState({
-    name: "",a
+    name: "",
     email: "",
     phone: "",
     gender: "",
