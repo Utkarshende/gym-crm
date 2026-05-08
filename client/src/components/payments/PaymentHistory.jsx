@@ -12,7 +12,6 @@ function PaymentHistory({ payments }) {
     <div className="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
       <h3 className="font-bold text-lg mb-4 text-gray-800 dark:text-white">Payment History</h3>
 
-      {/* DESKTOP TABLE (md and up) */}
       <div className="hidden md:block">
         <table className="w-full text-sm text-left">
           <thead>
@@ -40,7 +39,6 @@ function PaymentHistory({ payments }) {
         </table>
       </div>
 
-      {/* MOBILE LIST (Visible below md) */}
       <div className="md:hidden space-y-3">
         {payments.map((p, i) => (
           <div 

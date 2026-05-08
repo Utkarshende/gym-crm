@@ -16,7 +16,6 @@ function PaymentTable({ members }) {
         <h3 className="font-bold text-lg text-gray-800 dark:text-white">All Payments</h3>
       </div>
 
-      {/* DESKTOP TABLE (md and up) */}
       <div className="hidden md:block">
         <table className="w-full text-sm text-left">
           <thead>
@@ -40,7 +39,6 @@ function PaymentTable({ members }) {
         </table>
       </div>
 
-      {/* MOBILE GROUPED LIST (Visible below md) */}
       <div className="md:hidden divide-y dark:divide-gray-700">
         {membersWithPayments.map((m) => (
           <div key={m._id} className="p-4">

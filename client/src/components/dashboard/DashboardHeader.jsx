@@ -9,15 +9,7 @@ function DashboardHeader({ dark, setDark, onAdd }) {
         Members Dashboard
       </h1>
 
-      <div className="flex gap-2 w-full sm:w-auto">
-        <Button 
-          onClick={onAdd}
-          className="flex-1 sm:flex-none text-sm py-2 px-4 shadow-sm"
-        >
-          + <span className="hidden xs:inline">Add Member</span>
-          <span className="xs:hidden">Add</span>
-        </Button>
-      </div>
+      
 
     </div>
   );

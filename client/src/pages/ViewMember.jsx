@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import API from "../services/api";
+import Button from "../components/ui/Button"; 
+
 
 function ViewMember() {
   const { id } = useParams();
@@ -49,18 +51,18 @@ function ViewMember() {
       <div className="max-w-6xl mx-auto space-y-6">
         
         <div className="flex flex-wrap gap-3 justify-between items-center">
-          <button
+          <Button
             onClick={() => navigate(-1)}
-            className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-800 dark:text-white hover:bg-gray-300 transition"
+            className="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-white hover:bg-gray-300"
           >
             ← Back
-          </button>
-          <button
+          </Button>
+          
+          <Button
             onClick={() => navigate(`/member/edit/${id}`)}
-            className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
           >
             Edit Member
-          </button>
+          </Button>
         </div>
 
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow p-6">
@@ -100,7 +102,7 @@ function ViewMember() {
             <div className="space-y-3 text-gray-700 dark:text-gray-200">
               <p><b>Plan:</b> {member.plan}</p>
               <p><b>Fees:</b> ₹{member.fee}</p>
-              <p><b>Expiry:</b> <span className="text-red-500">{member.expiryDate?.slice(0, 10)}</span></p>
+              <p><b>Expiry:</b> <span className="text-red-500 font-bold">{member.expiryDate?.slice(0, 10)}</span></p>
             </div>
           </div>
         </div>
@@ -119,7 +121,7 @@ function ViewMember() {
                 </thead>
                 <tbody>
                   {member.payments.map((item, index) => (
-                    <tr key={index} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-750">
+                    <tr key={index} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900">
                       <td className="py-3 px-2">{item.month}</td>
                       <td className="py-3 px-2 font-medium text-green-600">₹{item.amount}</td>
                       <td className="py-3 px-2">{item.paidOn?.slice(0, 10)}</td>

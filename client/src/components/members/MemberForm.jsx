@@ -11,7 +11,6 @@ function MemberForm({ form, setForm, onSubmit, buttonText }) {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  // Helper component for labels to keep code DRY
   const Label = ({ children }) => (
     <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 ml-1">
       {children}
@@ -21,7 +20,6 @@ function MemberForm({ form, setForm, onSubmit, buttonText }) {
   return (
     <div className="space-y-6 pb-20 md:pb-0">
       
-      {/* PERSONAL INFO SECTION */}
       <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
         <h2 className="font-bold text-lg text-gray-800 border-b pb-2">Personal Info</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -70,7 +68,6 @@ function MemberForm({ form, setForm, onSubmit, buttonText }) {
         </div>
       </div>
 
-      {/* FITNESS SECTION */}
       <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
         <h2 className="font-bold text-lg text-gray-800 border-b pb-2">Fitness Stats</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -113,7 +110,6 @@ function MemberForm({ form, setForm, onSubmit, buttonText }) {
         </div>
       </div>
 
-      {/* MEMBERSHIP SECTION */}
       <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
         <h2 className="font-bold text-lg text-gray-800 border-b pb-2">Membership</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -142,7 +138,6 @@ function MemberForm({ form, setForm, onSubmit, buttonText }) {
         </div>
       </div>
 
-      {/* SUBMIT BUTTON */}
       <button
         onClick={onSubmit}
         className="w-full md:w-auto md:min-w-[200px] bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white px-8 py-4 rounded-xl font-bold shadow-lg shadow-blue-200 transition-all text-lg"

@@ -4,7 +4,6 @@ function PaymentSection({ payments, updatePayment, addPaymentRow, removePayment 
   return (
     <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 space-y-6">
       
-      {/* Header Section */}
       <div className="flex flex-row justify-between items-center border-b dark:border-gray-700 pb-4">
         <h2 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white">
           Payment History
@@ -24,7 +23,6 @@ function PaymentSection({ payments, updatePayment, addPaymentRow, removePayment 
             key={index} 
             className="relative grid grid-cols-2 md:grid-cols-4 gap-3 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl border border-gray-100 dark:border-gray-700 md:bg-transparent md:p-0 md:border-0"
           >
-            {/* Month Input - Full width on tiny screens, half on mobile/tablet */}
             <div className="col-span-2 md:col-span-1">
               <Input
                 label="Month"
@@ -34,7 +32,6 @@ function PaymentSection({ payments, updatePayment, addPaymentRow, removePayment 
               />
             </div>
 
-            {/* Amount Input */}
             <div className="col-span-1 md:col-span-1">
               <Input
                 label="Amount"
@@ -45,7 +42,6 @@ function PaymentSection({ payments, updatePayment, addPaymentRow, removePayment 
               />
             </div>
 
-            {/* Date Input */}
             <div className="col-span-1 md:col-span-1">
               <Input
                 label="Paid On"
@@ -55,7 +51,6 @@ function PaymentSection({ payments, updatePayment, addPaymentRow, removePayment 
               />
             </div>
 
-            {/* Delete Button - Aligned to bottom on desktop, integrated into grid on mobile */}
             <div className="col-span-2 md:col-span-1 flex items-end">
               <button
                 onClick={() => removePayment(index)}

@@ -7,7 +7,6 @@ function MemberTable({ members, onView, onEdit, onDelete }) {
 
   return (
     <div className="bg-white md:rounded-2xl shadow overflow-hidden border border-gray-100">
-      {/* DESKTOP TABLE VIEW (Visible on md and up) */}
       <div className="hidden md:block overflow-x-auto">
         <table className="w-full text-left">
           <thead className="bg-slate-50 border-b">
@@ -43,7 +42,6 @@ function MemberTable({ members, onView, onEdit, onDelete }) {
         </table>
       </div>
 
-      {/* MOBILE CARD VIEW (Visible below md) */}
       <div className="md:hidden divide-y divide-gray-100">
         {members.map((m) => (
           <div key={m._id} className="p-4 space-y-3">
@@ -69,7 +67,6 @@ function MemberTable({ members, onView, onEdit, onDelete }) {
         ))}
       </div>
 
-      {/* EMPTY STATE */}
       {!members.length && (
         <div className="text-center p-10">
           <p className="text-gray-400 italic">No members found</p>
