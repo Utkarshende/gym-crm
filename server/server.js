@@ -13,11 +13,14 @@ connectDB();
 const app = express();
 
 app.use(cors({
-  origin:[
-    "http://localhost:5173",
-    "https://gym-crm-backend-yu86.onrender.com"
+  origin: [
+    "http://localhost:5173",                    
+    "https://sfcgym.netlify.app",                
+    "https://gym-crm-backend-yu86.onrender.com"  
   ],
-  credentials:true,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],    
+  allowedHeaders: ["Content-Type", "Authorization"] 
 }));
 
 app.use(express.json());
