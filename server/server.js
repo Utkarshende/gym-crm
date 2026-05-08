@@ -12,8 +12,14 @@ connectDB();
 
 const app = express();
 
-// Middleware
-app.use(cors());
+app.use(cors({
+  origin:[
+    "http://localhost:5173",
+    "https://gym-crm-backend-yu86.onrender.com"
+  ],
+  credentials:true,
+}));
+
 app.use(express.json());
 
 // Routes
@@ -21,7 +27,6 @@ app.use("/api/members", memberRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/auth", authRoutes);
 
-// Server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

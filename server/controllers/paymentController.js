@@ -1,6 +1,5 @@
 import Member from "../models/Member.js";
 
-// ✅ Mark Payment
 export const markPaid = async (req, res) => {
   try {
     const { amount } = req.body;
@@ -17,7 +16,6 @@ export const markPaid = async (req, res) => {
       return res.status(404).json({ message: "Member not found" });
     }
 
-    // Prevent duplicate payment for same month
     const alreadyPaid = member.payments.some(
       (p) => p.month === month
     );
@@ -44,7 +42,6 @@ export const markPaid = async (req, res) => {
   }
 };
 
-// ✅ Get Pending Members
 export const getPendingMembers = async (req, res) => {
   try {
     const month = new Date().toLocaleString("default", {
@@ -66,7 +63,6 @@ export const getPendingMembers = async (req, res) => {
   }
 };
 
-// ✅ Monthly Revenue
 export const monthlyRevenue = async (req, res) => {
   try {
     const month = new Date().toLocaleString("default", {
