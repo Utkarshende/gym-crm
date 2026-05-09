@@ -54,32 +54,15 @@ You can access the live version of the application and the API documentation usi
 * Render (Backend)
 * MongoDB Atlas (Database)
 
-# Project Structure
-gym-crm/
-│
-├── client/
-│    ├── src/  
-│    ├── components/
-│    ├── pages/
-│    ├── layouts/
-│    └── services/
-│
-├── server/
-│   ├── controllers/
-│   ├── routes/
-│   ├── models/
-│   ├── middleware/
-│   └── config/
-
 ## Installation
 1. Clone Repository
-git clone YOUR_GITHUB_REPO_URL
+git clone
 
 2. Install Frontend Dependencies
-cd clientnpm install
+cd client /npm install
 
 3. Install Backend Dependencies
-cd servernpm install
+cd server /npm install
 
 ## Environment Variables
 Create a .env file inside the server folder.
@@ -103,16 +86,6 @@ npm run dev
 * Payment Dashboard
 * Login & Register
 
-## API Endpoints
-Members
-GET     /api/membersPOST    /api/membersPUT     /api/members/:idDELETE  /api/members/:id
-
-Payments
-POST  /api/payments/:id/payGET   /api/payments/pending/listGET   /api/payments/revenue/month
-
-Auth
-POST /api/auth/loginPOST /api/auth/register
-
 ## Responsive Design
 The application is fully responsive and works on:
 
@@ -127,23 +100,14 @@ The application is fully responsive and works on:
 * Protected Routes
 * Local Storage Token Management
 
-## Deployment
-
-*Frontend Deployment*
-Deployed on *Netlify*.
-
-*Backend Deployment*
-Deployed on *Render*.
-
-*Database*
-*MongoDB* Atlas Cloud Database.
-
-## Author
-Utkarsha Shende
-
-MERN Stack Developer
-
-Full Stack Web Developer
-
 ## License
 This project is open-source and free to use for learning purposes.
+
+## Contact
+*For any inquiries or feedback, please contact:*
+
+# Utkarsha Shende
+
+ * utkarshapd1403@gmail.com
+
+ * +91-9022767403
