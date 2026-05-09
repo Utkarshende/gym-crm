@@ -55,7 +55,21 @@ You can access the live version of the application and the API documentation usi
 * MongoDB Atlas (Database)
 
 # Project Structure
-gym-crm/│├── client/│   ├── src/│   ├── components/│   ├── pages/│   ├── layouts/│   └── services/│├── server/│   ├── controllers/│   ├── routes/│   ├── models/│   ├── middleware/│   └── config/
+gym-crm/
+│
+├── client/
+│    ├── src/  
+│    ├── components/
+│    ├── pages/
+│    ├── layouts/
+│    └── services/
+│
+├── server/
+│   ├── controllers/
+│   ├── routes/
+│   ├── models/
+│   ├── middleware/
+│   └── config/
 
 ## Installation
 1. Clone Repository
