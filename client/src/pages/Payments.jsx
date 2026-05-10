@@ -27,8 +27,8 @@ function Payments() {
         API.get("/payments/revenue/month"),
       ]);
 
-      setMembers(membersRes.data || []);
-      setPendingMembers(pendingRes.data || []);
+      setMembers(Array.isArray(membersRes.data || []) ? membersRes.data : []);
+      setPendingMembers(Array.isArray(pendingRes.data || []) ? pendingRes.data : []);
       setRevenue(revenueRes.data?.revenue || 0);
 
     } catch (error) {

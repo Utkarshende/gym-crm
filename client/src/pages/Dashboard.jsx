@@ -18,7 +18,7 @@ function Dashboard() {
   const fetchMembers = async () => {
     try {
       const res = await API.get("/members");
-      setMembers(res.data);
+      setMembers(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
       console.error(error);
     }
