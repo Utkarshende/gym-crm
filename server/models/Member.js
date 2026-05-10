@@ -30,6 +30,11 @@ const memberSchema = new mongoose.Schema(
         },
       },
     ],
+    adminId: { 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: "Admin", 
+      required: true 
+    }
   },
   { timestamps: true }
 );

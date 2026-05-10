@@ -1,5 +1,7 @@
 import Member from "../models/Member.js";
 
+
+// MARK PAYMENT
 export const markPaid = async (req, res) => {
   try {
     const { amount } = req.body;
@@ -10,38 +12,38 @@ export const markPaid = async (req, res) => {
       year: "numeric",
     });
 
-    const member = await Member.findById(id);
+    const member = await Member.findOne({
+      _id: id,
+      adminId: req.user.id,
+    });
 
     if (!member) {
-      return res.status(404).json({ message: "Member not found" });
-    }
-
-    const alreadyPaid = member.payments.some(
-      (p) => p.month === month
-    );
-
-    if (alreadyPaid) {
-      return res.status(400).json({ message: "Already paid this month" });
+      return res.status(404).json({
+        message: "Member not found",
+      });
     }
 
     member.payments.push({
-      amount: Number(amount),
+      amount,
       month,
-      paidOn: new Date(),
     });
 
     await member.save();
 
     res.json({
-      message: "Payment Added ✅",
+      message: "Payment added",
       member,
     });
 
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
+
+// PENDING MEMBERS
 export const getPendingMembers = async (req, res) => {
   try {
     const month = new Date().toLocaleString("default", {
@@ -49,20 +51,28 @@ export const getPendingMembers = async (req, res) => {
       year: "numeric",
     });
 
-    const members = await Member.find();
+    const members = await Member.find({
+      adminId: req.user.id,
+    });
 
     const pending = members.filter(
       (m) =>
-        !m.payments?.some((p) => p.month === month)
+        !m.payments.some(
+          (p) => p.month === month
+        )
     );
 
     res.json(pending);
 
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
+
+// MONTHLY REVENUE
 export const monthlyRevenue = async (req, res) => {
   try {
     const month = new Date().toLocaleString("default", {
@@ -70,21 +80,27 @@ export const monthlyRevenue = async (req, res) => {
       year: "numeric",
     });
 
-    const members = await Member.find();
+    const members = await Member.find({
+      adminId: req.user.id,
+    });
 
     let total = 0;
 
     members.forEach((m) => {
-      m.payments?.forEach((p) => {
+      m.payments.forEach((p) => {
         if (p.month === month) {
-          total += Number(p.amount || 0);
+          total += p.amount;
         }
       });
     });
 
-    res.json({ revenue: total });
+    res.json({
+      revenue: total,
+    });
 
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };

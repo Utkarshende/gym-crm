@@ -1,35 +1,32 @@
 import jwt from "jsonwebtoken";
 
-export const protect = (req, res, next) => {
-  const auth =
-    req.headers.authorization;
+const authMiddleware = (req, res, next) => {
+  try {
 
-  if (
-    auth &&
-    auth.startsWith("Bearer")
-  ) {
-    try {
-      const token =
-        auth.split(" ")[1];
+    const authHeader = req.headers.authorization;
 
-      jwt.verify(
-        token,
-        process.env.JWT_SECRET
-      );
-
-      next();
-    } catch {
-      return res
-        .status(401)
-        .json({
-          message: "Unauthorized",
-        });
-    }
-  } else {
-    return res
-      .status(401)
-      .json({
+    if (!authHeader) {
+      return res.status(401).json({
         message: "No token",
       });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET
+    );
+
+    req.user = decoded;
+
+    next();
+
+  } catch (error) {
+    res.status(401).json({
+      message: "Invalid token",
+    });
   }
 };
+
+export default authMiddleware;

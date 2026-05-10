@@ -1,56 +1,121 @@
 import Member from "../models/Member.js";
 
+
+// GET MEMBERS
 export const getMembers = async (req, res) => {
   try {
-    const members = await Member.find().sort({ createdAt: -1 });
+
+    const members = await Member.find({
+      adminId: req.user.id,
+    });
+
     res.json(members);
+
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
+
+// ADD MEMBER
 export const addMember = async (req, res) => {
   try {
-    const member = await Member.create(req.body);
+
+    const member = await Member.create({
+      ...req.body,
+      adminId: req.user.id,
+    });
+
     res.status(201).json(member);
+
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
+
+// GET MEMBER BY ID
 export const getMemberById = async (req, res) => {
   try {
-    const member = await Member.findById(req.params.id);
+
+    const member = await Member.findOne({
+      _id: req.params.id,
+      adminId: req.user.id,
+    });
 
     if (!member) {
-      return res.status(404).json({ message: "Member not found" });
+      return res.status(404).json({
+        message: "Member not found",
+      });
     }
 
     res.json(member);
+
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
+
+// UPDATE MEMBER
 export const updateMember = async (req, res) => {
   try {
-    const member = await Member.findByIdAndUpdate(
-      req.params.id,
+
+    const member = await Member.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        adminId: req.user.id,
+      },
       req.body,
-      { new: true }
+      {
+        new: true,
+      }
     );
 
+    if (!member) {
+      return res.status(404).json({
+        message: "Member not found",
+      });
+    }
+
     res.json(member);
+
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
+
+// DELETE MEMBER
 export const deleteMember = async (req, res) => {
   try {
-    await Member.findByIdAndDelete(req.params.id);
-    res.json({ message: "Member deleted" });
+
+    const member = await Member.findOneAndDelete({
+      _id: req.params.id,
+      adminId: req.user.id,
+    });
+
+    if (!member) {
+      return res.status(404).json({
+        message: "Member not found",
+      });
+    }
+
+    res.json({
+      message: "Member deleted",
+    });
+
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };

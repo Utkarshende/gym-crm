@@ -1,10 +1,11 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://gym-crm-backend-yu86.onrender.com/api",
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 API.interceptors.request.use((req) => {
+
   const token = localStorage.getItem("token");
 
   if (token) {

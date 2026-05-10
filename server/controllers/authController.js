@@ -1,35 +1,49 @@
-import Admin from "../models/Admin.js";
+import User from "../models/Admin.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "7d",
-  });
-};
-
-export const registerAdmin = async (req, res) => {
+// REGISTER
+export const register = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
 
-    const exists = await Admin.findOne({ email });
+    const existingUser = await User.findOne({ email });
 
-    if (exists) {
+    if (existingUser) {
       return res.status(400).json({
-        message: "Admin already exists",
+        message: "User already exists",
       });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const admin = await Admin.create({
+    const user = await User.create({
+      name,
       email,
       password: hashedPassword,
     });
 
+    // CREATE TOKEN
+    const token = jwt.sign(
+      {
+        id: user._id,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      }
+    );
+
+    // RETURN TOKEN
     res.status(201).json({
-      token: generateToken(admin._id),
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
     });
+
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -37,32 +51,50 @@ export const registerAdmin = async (req, res) => {
   }
 };
 
-export const loginAdmin = async (req, res) => {
+
+// LOGIN
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const admin = await Admin.findOne({ email });
+    const user = await User.findOne({ email });
 
-    if (!admin) {
+    if (!user) {
       return res.status(400).json({
-        message: "Admin not found",
+        message: "Invalid credentials",
       });
     }
 
-    const match = await bcrypt.compare(
+    const isMatch = await bcrypt.compare(
       password,
-      admin.password
+      user.password
     );
 
-    if (!match) {
+    if (!isMatch) {
       return res.status(400).json({
-        message: "Wrong password",
+        message: "Invalid credentials",
       });
     }
 
+    const token = jwt.sign(
+      {
+        id: user._id,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      }
+    );
+
     res.json({
-      token: generateToken(admin._id),
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
     });
+
   } catch (error) {
     res.status(500).json({
       message: error.message,
