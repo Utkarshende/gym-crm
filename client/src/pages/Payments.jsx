@@ -4,7 +4,6 @@ import API from "../services/api";
 import PaymentTable from "../components/payments/PaymentTable";
 import PaymentHistory from "../components/payments/PaymentHistory";
 import PaymentCard from "../components/payments/PaymentCard";
-import Member from "../../../server/models/Member";
 
 function Payments() {
   const [members, setMembers] = useState([]);
@@ -63,13 +62,13 @@ function Payments() {
     return <div className="p-6 text-gray-500">Loading Payments...</div>;
   }
 
-const sendWhatsApp = (memeber) =>{
+/*const sendWhatsAppMessage = (memeber) =>{
   const message=`Hello ${memeber.name}, this is a reminder that your gym fee of ₹${memeber.fee} for ${currentMonth} is pending. Please make the payment at your earliest convenience.<br /> - SFC Gym`;
   const phone = `91${memeber.phone}`;
 
   const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
   window.open(url, "_blank");
-}
+}*/
 
 
   return (
@@ -114,6 +113,7 @@ const sendWhatsApp = (memeber) =>{
                 <th className="p-3">Phone</th>
                 <th className="p-3">Fee</th>
                 <th className="p-3">Action</th>
+                <th className="p-3">Reminder</th>
               </tr>
             </thead>
 
@@ -123,7 +123,6 @@ const sendWhatsApp = (memeber) =>{
                   <td className="p-3">{member.name}</td>
                   <td className="p-3">{member.phone}</td>
                   <td className="p-3">₹{member.fee}</td>
-
                   <td className="p-3">
                     <button
                       onClick={() => markPaid(member)}
@@ -131,13 +130,24 @@ const sendWhatsApp = (memeber) =>{
                     >
                       Mark Paid
                     </button>
-                    <button
-                    onClick={()=> sendWhatsAppMessage(member)}
-                    className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
-                    >
-                    Whatsapp Reminder
-                    </button>
                   </td>
+                  <td className="p-3">
+  <button
+    onClick={() => {
+      const phone = `91${member.phone}`;
+
+      const message =
+        `Hello ${member.name}, this is a reminder that your gym fee of ₹${member.fee} for ${currentMonth} is pending. Please pay soon. - SFC Gym`;
+
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+      window.open(url, "_blank");
+    }}
+    className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+  >
+    WhatsApp Reminder
+  </button>
+</td>
                 </tr>
               ))}
             </tbody>

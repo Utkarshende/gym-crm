@@ -61,6 +61,14 @@ function MemberTable({ members, onView, onEdit, onDelete }) {
                 <button onClick={() => onView(m)} className="text-blue-600 font-semibold">View</button>
                 <button onClick={() => onEdit(m)} className="text-green-600 font-semibold">Edit</button>
                 <button onClick={() => onDelete(m)} className="text-red-600 font-semibold">Delete</button>
+                <button onClick={()=>{
+                  const phone = `91${m.phone}`;
+
+                  const message = `Hello ${m.name}, your gym fees is pending . Please pay your membership fees.`;
+                  const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+                  window.open(url,"_blank");
+                }}
+                className="bg-green-600 text-white px-3 py-1 rounded">Whatsapp</button>
               </div>
             </div>
           </div>
