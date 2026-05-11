@@ -18,4 +18,4 @@ router.get("/pending/list", getPendingMembers);
 
 router.get("/revenue/month", monthlyRevenue);
 
-export default router;
+export default router;  
