@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import API from "../services/api";
 import Button from "../components/ui/Button";
+import { sendFeeReminder } from "../utils/whatsapp";
 
 function ViewMember() {
   const { id } = useParams();
@@ -105,7 +106,7 @@ function ViewMember() {
             </Button>
 
             <button
-              onClick={sendWhatsAppReminder}
+              onClick={() => sendFeeReminder(member)}
               className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold"
             >
               WhatsApp Reminder
@@ -113,7 +114,6 @@ function ViewMember() {
           </div>
         </div>
 
-        {/* MEMBER HEADER */}
         <div className="bg-white rounded-2xl shadow p-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
 
@@ -137,10 +137,8 @@ function ViewMember() {
           </div>
         </div>
 
-        {/* INFO CARDS */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-          {/* PERSONAL DETAILS */}
           <div className="bg-white rounded-2xl shadow p-6">
             <h2 className="text-xl font-bold mb-5 border-b pb-2">
               Personal Details
@@ -184,7 +182,6 @@ function ViewMember() {
             </div>
           </div>
 
-          {/* FITNESS */}
           <div className="bg-white rounded-2xl shadow p-6">
             <h2 className="text-xl font-bold mb-5 border-b pb-2">
               Fitness Details
@@ -234,7 +231,6 @@ function ViewMember() {
             </div>
           </div>
 
-          {/* MEMBERSHIP */}
           <div className="bg-white rounded-2xl shadow p-6 md:col-span-2">
             <h2 className="text-xl font-bold mb-5 border-b pb-2">
               Membership Details
@@ -275,7 +271,6 @@ function ViewMember() {
           </div>
         </div>
 
-        {/* PAYMENT HISTORY */}
         <div className="bg-white rounded-2xl shadow p-6">
           <h2 className="text-xl font-bold mb-5">
             Payment History

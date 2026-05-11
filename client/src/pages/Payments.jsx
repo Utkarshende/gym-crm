@@ -4,6 +4,7 @@ import API from "../services/api";
 import PaymentTable from "../components/payments/PaymentTable";
 import PaymentHistory from "../components/payments/PaymentHistory";
 import PaymentCard from "../components/payments/PaymentCard";
+import { sendFeeReminder } from "../utils/whatsapp";
 
 function Payments() {
   const [members, setMembers] = useState([]);
@@ -61,14 +62,6 @@ function Payments() {
   if (loading) {
     return <div className="p-6 text-gray-500">Loading Payments...</div>;
   }
-
-/*const sendWhatsAppMessage = (memeber) =>{
-  const message=`Hello ${memeber.name}, this is a reminder that your gym fee of ₹${memeber.fee} for ${currentMonth} is pending. Please make the payment at your earliest convenience.<br /> - SFC Gym`;
-  const phone = `91${memeber.phone}`;
-
-  const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-  window.open(url, "_blank");
-}*/
 
 
   return (
@@ -134,14 +127,7 @@ function Payments() {
                   <td className="p-3">
   <button
     onClick={() => {
-      const phone = `91${member.phone}`;
-
-      const message =
-        `Hello ${member.name}, this is a reminder that your gym fee of ₹${member.fee} for ${currentMonth} is pending. Please pay soon. - SFC Gym`;
-
-      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-
-      window.open(url, "_blank");
+      sendFeeReminder(member, currentMonth);
     }}
     className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
   >
