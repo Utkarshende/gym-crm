@@ -23,11 +23,6 @@ function Sidebar() {
       icon: "👤",
     },
 
-    {
-      name: "Attendance",
-      path: "/attendance",
-      icon: "✅",
-    },
   ];
 
   return (

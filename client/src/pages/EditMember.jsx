@@ -5,7 +5,7 @@ import API from "../services/api";
 import Input from "../components/ui/Input";
 import Select from "../components/ui/Select";
 import Button from "../components/ui/Button"; 
-import PaymentSection from "../components/members/PaymentSection";
+import PaymentSection from "../components/payments/PaymentSection";
 
 import { GENDER, STATUS } from "../utils/constants";
 import { validateName, validatePhone, validateEmail } from "../utils/validator.js";
