@@ -7,6 +7,12 @@ const router = express.Router();
 
 router.use(authMiddleware);
 
+
+router.get("/",(req,res)=>{
+  res.json({    message:"Attendance route working"
+  })
+});
+
 /* MARK ATTENDANCE */
 router.post("/mark", async (req, res) => {
   try {
