@@ -14,7 +14,7 @@ export const markPaid = async (req, res) => {
 
     const member = await Member.findOne({
       _id: id,
-      adminId: req.user.id,
+      adminId: req.user._id,
     });
 
     if (!member) {
@@ -52,7 +52,7 @@ export const getPendingMembers = async (req, res) => {
     });
 
     const members = await Member.find({
-      adminId: req.user.id,
+      adminId: req.user._id,
     });
 
     const pending = members.filter(
@@ -81,7 +81,7 @@ export const monthlyRevenue = async (req, res) => {
     });
 
     const members = await Member.find({
-      adminId: req.user.id,
+      adminId: req.user._id,
     });
 
     let total = 0;
