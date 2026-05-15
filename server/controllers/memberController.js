@@ -6,7 +6,7 @@ export const getMembers = async (req, res) => {
   try {
 
     const members = await Member.find({
-      adminId: req.user._id,
+      adminId: req.user.id,
     });
 
     res.json(members);
@@ -25,7 +25,7 @@ export const addMember = async (req, res) => {
 
     const member = await Member.create({
       ...req.body,
-      adminId: req.user._id,
+      adminId: req.user.id,
     });
 
     res.status(201).json(member);
@@ -43,8 +43,8 @@ export const getMemberById = async (req, res) => {
   try {
 
     const member = await Member.findOne({
-      _id: req.params._id,
-      adminId: req.user._id,
+      _id: req.params.id,
+      adminId: req.user.id,
     });
 
     if (!member) {
@@ -69,8 +69,8 @@ export const updateMember = async (req, res) => {
 
     const member = await Member.findOneAndUpdate(
       {
-        _id: req.params._id,
-        adminId: req.user._id,
+        _id: req.params.id,
+        adminId: req.user.id,
       },
       req.body,
       {
@@ -99,8 +99,8 @@ export const deleteMember = async (req, res) => {
   try {
 
     const member = await Member.findOneAndDelete({
-      _id: req.params._id,
-      adminId: req.user._id,
+      _id: req.params.id,
+      adminId: req.user.id,
     });
 
     if (!member) {
