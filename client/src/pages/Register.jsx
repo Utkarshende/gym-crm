@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../services/api";
+import { errorAlert } from "../utils/alert";
 
 function Register() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ function Register() {
       navigate("/dashboard");
     } catch (error) {
       console.log(error.response?.data);
-      alert(error.response?.data?.message || "Register failed");
+      errorAlert("Register Failed", error.response?.data?.message || "Failed to register");
     }
   };
 

@@ -5,7 +5,7 @@ import API from "../services/api";
 import MemberTable from "../components/members/MemberTable";
 import DashboardHeader from "../components/dashboard/DashboardHeader";
 import DashboardFilters from "../components/dashboard/DashboardFilters";
-
+import { errorAlert, successAlert } from "../utils/alert";
 import { exportToCSV } from "../utils/exportCSV";
 
 function Dashboard() {
@@ -61,8 +61,8 @@ function Dashboard() {
           try {
             await API.delete(`/members/${m._id}`);
             fetchMembers();
-          } catch {
-            alert("Delete failed");
+          } catch (error) {
+            errorAlert("Delete Failed", "Failed to delete member");
           }
         }}
       />

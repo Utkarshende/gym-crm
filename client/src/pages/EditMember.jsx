@@ -6,6 +6,7 @@ import Input from "../components/ui/Input";
 import Select from "../components/ui/Select";
 import Button from "../components/ui/Button"; 
 import PaymentSection from "../components/payments/PaymentSection";
+import { errorAlert, successAlert, warningAlert } from "../utils/alert.js";
 
 import { GENDER, STATUS } from "../utils/constants";
 import { validateName, validatePhone, validateEmail } from "../utils/validator.js";
@@ -34,7 +35,7 @@ function EditMember() {
   useEffect(() => {
     API.get(`/members/${id}`)
       .then((res) => setMember(res.data))
-      .catch(() => alert("Failed to load member"))
+      .catch(() => warningAlert("Failed to load member"))
       .finally(() => setLoading(false));
   }, [id]);
 
@@ -49,17 +50,17 @@ function EditMember() {
   };
 
   const handleSave = async () => {
-    if (!validateName(member.name)) return alert("Invalid Name");
-    if (!validatePhone(member.phone)) return alert("Phone must be 10 digits");
-    if (member.email && !validateEmail(member.email)) return alert("Invalid Email");
+    if (!validateName(member.name)) return warningAlert("Invalid Name");
+    if (!validatePhone(member.phone)) return warningAlert("Phone must be 10 digits");
+    if (member.email && !validateEmail(member.email)) return warningAlert("Invalid Email");
 
     try {
       setSaving(true);
       await API.put(`/members/${id}`, member);
-      alert("Profile Updated Successfully ✅");
+      successAlert("Update Successful", "Profile updated successfully");
       navigate(`/member/view/${id}`);
     } catch {
-      alert("Update failed");
+      errorAlert("Update Failed", "Failed to update member profile");
     } finally {
       setSaving(false);
     }
@@ -108,7 +109,7 @@ function EditMember() {
           name="gender"
           value={member.gender}
           onChange={handleChange}
-          options={GENDER} // Using Constant
+          options={GENDER} 
         />
 
         <Input label="Height (cm)" name="height" type="number" value={member.height} onChange={handleChange} />
@@ -128,7 +129,7 @@ function EditMember() {
           name="status"
           value={member.status}
           onChange={handleChange}
-          options={STATUS} // Using Constant
+          options={STATUS} 
         />
       </div>
 

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import API from "../services/api";
 import Button from "../components/ui/Button";
 import { sendFeeReminder } from "../utils/whatsapp";
+import { errorAlert } from "../utils/alert";
 
 function ViewMember() {
   const { id } = useParams();
@@ -23,7 +24,7 @@ function ViewMember() {
 
     } catch (error) {
       console.error("Fetch Error:", error);
-      alert("Failed to load member");
+      errorAlert("Failed to load member");
     } finally {
       setLoading(false);
     }

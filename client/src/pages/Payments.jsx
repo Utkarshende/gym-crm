@@ -5,6 +5,7 @@ import PaymentTable from "../components/payments/PaymentTable";
 import PaymentHistory from "../components/payments/PaymentHistory";
 import PaymentCard from "../components/payments/PaymentCard";
 import { sendFeeReminder } from "../utils/whatsapp";
+import { errorAlert, successAlert } from "../utils/alert";
 
 function Payments() {
   const [members, setMembers] = useState([]);
@@ -34,7 +35,7 @@ function Payments() {
 
     } catch (error) {
       console.error("Payment fetch error:", error);
-      alert("Failed to load payment data");
+      errorAlert("Failed to load payment data");
     } finally {
       setLoading(false);
     }
@@ -50,12 +51,12 @@ function Payments() {
         amount: member.fee,
       });
 
-      alert("Payment marked successfully ✅");
+      successAlert("Payment marked successfully ✅");
       fetchPaymentsData();
 
     } catch (error) {
       console.error(error);
-      alert("Failed to mark payment ❌");
+      errorAlert("Failed to mark payment ❌");
     }
   };
 
