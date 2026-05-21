@@ -1,5 +1,4 @@
 function PaymentTable({ members }) {
-  // Filter out members who haven't made any payments to avoid empty sections
   const membersWithPayments = members?.filter(m => m.payments && m.payments.length > 0);
 
   if (!membersWithPayments?.length) {

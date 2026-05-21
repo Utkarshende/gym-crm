@@ -16,8 +16,17 @@ function Payments() {
 
   const currentMonth = new Date().toLocaleString("default", {
     month: "long",
-    year: "numeric",
   });
+
+  const paidMembers = 
+  members.filter((member)=>{
+    if(!Array.isArray(member.payments))
+
+      return false;
+
+    return member.payments.some((payment) => payment.month ===currentMonth);
+
+  })
 
   const fetchPaymentsData = async () => {
     try {
@@ -143,7 +152,7 @@ function Payments() {
       </div>
 
       <PaymentTable
-        members={members}
+        members={paidMembers}
         onViewHistory={(member) => setSelectedMember(member)}
       />
 
