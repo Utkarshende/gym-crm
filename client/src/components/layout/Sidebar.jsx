@@ -23,11 +23,16 @@ function Sidebar() {
       icon: "👤",
     },
 
+    {
+  name: "AI Workout",
+  path: "/ai-workout",
+  icon: "🤖"
+}
+
   ];
 
   return (
     <>
-      {/* DESKTOP SIDEBAR */}
       <div className="hidden md:flex flex-col w-64 bg-slate-900 text-white p-5 min-h-screen sticky top-0">
 
         <h2 className="text-2xl font-bold mb-8 flex items-center gap-2">
@@ -56,7 +61,6 @@ function Sidebar() {
         </nav>
       </div>
 
-      {/* MOBILE BOTTOM NAV */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900 text-white border-t border-slate-800 z-50">
 
         <div className="flex justify-around items-center">

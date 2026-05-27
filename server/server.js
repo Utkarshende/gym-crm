@@ -6,6 +6,7 @@ import connectDB from "./config/db.js";
 import memberRoutes from "./routes/memberRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import aiRoutes from "./routes/aiRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -28,6 +29,7 @@ app.use(express.json());
 app.use("/api/members", memberRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/ai", aiRoutes);
 
 const PORT = process.env.PORT || 5000;
 

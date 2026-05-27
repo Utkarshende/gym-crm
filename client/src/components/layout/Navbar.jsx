@@ -2,12 +2,11 @@ import { useNavigate } from "react-router-dom";
 
 function Navbar() {
   const navigate = useNavigate();
-  // Retrieve the name stored during Login or Registration
   const adminName = localStorage.getItem("adminName");
 
   const logout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("adminName"); // Clear name on logout
+    localStorage.removeItem("adminName"); 
     navigate("/login");
   };
 
@@ -21,7 +20,6 @@ function Navbar() {
       </h1>
 
       <div className="flex items-center gap-3 sm:gap-5">
-        {/* Displaying the Admin Name */}
         {adminName && (
           <span className="hidden md:inline text-gray-700 font-medium">
             Hi, <span className="text-blue-600">{adminName}</span>
