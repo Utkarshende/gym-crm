@@ -9,7 +9,6 @@ import ViewMember from "./pages/ViewMember";
 import Payments from "./pages/Payments";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import AIWorkout from "./pages/AIWorkout";
 
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -55,12 +54,6 @@ function App() {
         }/>
 
         <Route path="*" element={<Navigate to="/dashboard" />} />
-
-<Route
-  path="/ai-workout"
-  element={<AIWorkout />}
-/>
-
       </Routes>
     </BrowserRouter>
   );

@@ -23,12 +23,6 @@ function Sidebar() {
       icon: "👤",
     },
 
-    {
-  name: "AI Workout",
-  path: "/ai-workout",
-  icon: "🤖"
-}
-
   ];
 
   return (
