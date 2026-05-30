@@ -11,7 +11,7 @@ function MemberForm({ form, setForm, onSubmit, buttonText }) {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  const Label = ({ children }) => (
+  const Label = ({ children }) => ( 
     <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 ml-1">
       {children}
     </label>

@@ -13,7 +13,7 @@ function DashboardFilters({
   return (
     
     <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-3 items-end">
-      
+        
       <div className="xs:col-span-2 md:col-span-1">
         <label className="block text-xs font-medium text-gray-500 mb-1 ml-1">Search</label>
         <Input 
